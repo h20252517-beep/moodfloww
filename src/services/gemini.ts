@@ -15,19 +15,17 @@ export interface RecommendationResult {
   advice: string;
 }
 
-export async function analyzeDiary(text: string) {
-  if (!text.trim()) return null;
-
+export async function analyzeDiary(text: string): Promise<string | null> {
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `사용자의 오늘 있었던 일: "${text}"\n이 글을 바탕으로 사용자의 현재 감정을 'depressed', 'stressed', 'lethargic', 'calm', 'happy' 중 하나로 분석해서 해당 영단어만 반환해줘.`,
     });
-    const result = response.text?.trim().toLowerCase();
+    const emotion = response.text?.trim().toLowerCase();
     const valid = ['depressed', 'stressed', 'lethargic', 'calm', 'happy'];
-    return valid.includes(result || "") ? result : null;
+    return valid.includes(emotion || "") ? emotion || null : null;
   } catch (error) {
-    console.error("Diary analysis error:", error);
+    console.error("Diary Analysis Error:", error);
     return null;
   }
 }
@@ -37,7 +35,7 @@ export async function getDetailedRecommendations(
   target: string,
   intensity: number,
   reason: string,
-  diary?: string
+  diary: string
 ): Promise<RecommendationResult | null> {
   const prompt = `
     현재 감정: ${current} (강도: ${intensity}/5)
@@ -103,9 +101,10 @@ export async function getDetailedRecommendations(
       },
     });
 
-    return JSON.parse(response.text || "{}") as RecommendationResult;
+    const text = response.text;
+    return text ? JSON.parse(text) : null;
   } catch (error) {
-    console.error("Gemini recommendation error:", error);
+    console.error("Gemini Recommendations Error:", error);
     return null;
   }
 }

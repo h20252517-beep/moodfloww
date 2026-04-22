@@ -280,7 +280,7 @@ export default function App() {
       setView('result');
     } else {
       // Fallback or error handling
-      alert("추천을 생성하는 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      alert("추천을 생성하는 중 오류가 발생했습니다. Vercel 환경 설정에서 GEMINI_API_KEY가 등록되어 있는지 확인해주세요.");
       setView('selection');
     }
   };
