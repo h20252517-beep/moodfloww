@@ -1,0 +1,6 @@
+{
+  "name": "MoodFlow",
+  "description": "감정 변화를 고려한 단계별 음악 추천 서비스입니다. 점진적으로 당신의 기분을 목표 감정에 도달하게 도와줍니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
